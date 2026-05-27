@@ -1,7 +1,8 @@
-const CACHE_NAME = 'accreditcon-booth-v1';
+const CACHE_NAME = 'accreditcon-booth-v2';
 const ASSETS = [
   './',
   './slideshow.html',
+  './manifest.webmanifest',
   './fonts/poppins-400.woff2',
   './fonts/poppins-500.woff2',
   './fonts/poppins-600.woff2',

@@ -7,6 +7,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="MedEdPrep">
 <link rel="apple-touch-icon" href="logo-mep-white.svg">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0A0A0A">
 <title>MedEdPrep — AccreditCon 2026</title>
 <style>
   /* ============ LOCAL FONTS ============ */
@@ -45,6 +47,8 @@
     -webkit-user-select: none;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    touch-action: manipulation;
     overscroll-behavior: none;
   }
 
@@ -1085,7 +1089,7 @@
       if (!isPaused) return;
       isPaused = false;
       document.body.classList.remove('paused');
-      showSlide(index);  // restart timer for current slide
+      showSlide(index);
     }
 
     function advance() {
@@ -1094,7 +1098,7 @@
       showSlide(index);
     }
 
-    // First-tap fullscreen attempt
+    // Fullscreen attempt (non-iOS only; iOS uses standalone mode via Add to Home Screen)
     let triedFullscreen = false;
     function tryFullscreen() {
       if (triedFullscreen) return;
@@ -1104,17 +1108,19 @@
       if (req) req.call(el).catch(() => {});
     }
 
-    // Pointer events handle tap (advance) and hold (pause)
-    document.addEventListener('pointerdown', (e) => {
+    // Use touchstart/touchend for iOS reliability, pointer events as fallback
+    function handleDown(e) {
+      e.preventDefault();
       downTime = Date.now();
       holdTimer = setTimeout(() => {
         pauseShow();
         holdTimer = null;
       }, HOLD_MS);
       tryFullscreen();
-    });
+    }
 
-    document.addEventListener('pointerup', () => {
+    function handleUp(e) {
+      e.preventDefault();
       const heldMs = Date.now() - downTime;
       if (holdTimer) { clearTimeout(holdTimer); holdTimer = null; }
 
@@ -1123,14 +1129,27 @@
       } else if (heldMs < HOLD_MS) {
         advance();
       }
-    });
+    }
 
-    document.addEventListener('pointercancel', () => {
+    function handleCancel() {
       if (holdTimer) { clearTimeout(holdTimer); holdTimer = null; }
-    });
+    }
 
-    // Prevent context menu on long-press (which would interrupt the pause UX)
+    // Touch events (iOS/iPad)
+    document.addEventListener('touchstart', handleDown, { passive: false });
+    document.addEventListener('touchend', handleUp, { passive: false });
+    document.addEventListener('touchcancel', handleCancel);
+
+    // Mouse fallback (desktop preview)
+    document.addEventListener('mousedown', handleDown);
+    document.addEventListener('mouseup', handleUp);
+
+    // Suppress everything that interferes on iOS
     document.addEventListener('contextmenu', (e) => e.preventDefault());
+    document.addEventListener('selectstart', (e) => e.preventDefault());
+
+    // Prevent pull-to-refresh and bounce scrolling on iOS
+    document.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
 
     // Optional offset for multiple iPads: ?offset=3
     const params = new URLSearchParams(window.location.search);

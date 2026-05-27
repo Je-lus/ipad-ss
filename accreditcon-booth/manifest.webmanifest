@@ -1,0 +1,17 @@
+{
+  "name": "MedEdPrep — AccreditCon 2026",
+  "short_name": "MedEdPrep",
+  "start_url": "./slideshow.html",
+  "display": "fullscreen",
+  "orientation": "portrait",
+  "background_color": "#0A0A0A",
+  "theme_color": "#0A0A0A",
+  "icons": [
+    {
+      "src": "logo-mep-white.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
