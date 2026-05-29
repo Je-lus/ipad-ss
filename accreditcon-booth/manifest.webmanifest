@@ -3,7 +3,7 @@
   "short_name": "MedEdPrep",
   "start_url": "./slideshow.html",
   "display": "fullscreen",
-  "orientation": "portrait",
+  "orientation": "any",
   "background_color": "#0A0A0A",
   "theme_color": "#0A0A0A",
   "icons": [

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'accreditcon-booth-v2';
+const CACHE_NAME = 'accreditcon-booth-v3';
 const ASSETS = [
   './',
   './slideshow.html',

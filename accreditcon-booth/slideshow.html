@@ -82,6 +82,14 @@
     pointer-events: auto;
   }
 
+  /* Groups the text content of a slide so it can sit beside the QR in landscape */
+  .slide-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 100%;
+  }
+
   /* ============ ENTRANCE ANIMATIONS ============ */
   .slide .eyebrow,
   .slide .headline,
@@ -736,48 +744,49 @@
     50%      { opacity: 0.35; }
   }
 
-  /* ============ LANDSCAPE ROTATE MESSAGE ============ */
-  .rotate-message {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: var(--bg);
-    color: var(--white);
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 4vh 6vw;
-    z-index: 100;
-    text-align: center;
-    font-family: 'Poppins', sans-serif;
-  }
-  .rotate-message svg {
-    width: clamp(70px, 11vh, 120px);
-    height: auto;
-    margin-bottom: 3vh;
-    color: var(--mint);
-    animation: rotate-hint 2.8s ease-in-out infinite;
-  }
-  .rotate-message h2 {
-    font-size: clamp(1.4rem, 4vh, 2.4rem);
-    font-weight: 700;
-    margin-bottom: 1.5vh;
-    letter-spacing: -0.01em;
-  }
-  .rotate-message p {
-    font-size: clamp(0.95rem, 2vh, 1.3rem);
-    color: var(--gray-l);
-    font-weight: 400;
-    max-width: 80%;
-    line-height: 1.45;
-  }
-  @keyframes rotate-hint {
-    0%, 100% { transform: rotate(-12deg); }
-    50%      { transform: rotate(78deg); }
-  }
-  @media (orientation: landscape) and (max-height: 900px) {
-    .stage { display: none; }
-    .rotate-message { display: flex; }
+  /* ============ LANDSCAPE / TV LAYOUT ============ */
+  @media (orientation: landscape) and (min-width: 900px) {
+    /* More side padding, less top/bottom, to suit a wide 16:9 screen */
+    .slide { padding: 6vh 8vw; }
+
+    /* QR slides: text column on the left, big QR on the right */
+    .slide-coassist,
+    .slide-conference,
+    .slide-offer {
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: center;
+      align-items: center;
+      gap: 6vw;
+    }
+    .slide-conference,
+    .slide-offer { padding: 6vh 8vw; }
+
+    .slide-coassist  .slide-main,
+    .slide-conference .slide-main,
+    .slide-offer     .slide-main {
+      align-items: flex-start;
+      text-align: left;
+      max-width: 54vw;
+      flex: 1 1 auto;
+    }
+    /* Let the headline/body use the full width of their column */
+    .slide-coassist  .slide-main .headline,
+    .slide-conference .slide-main .headline,
+    .slide-offer     .slide-main .headline,
+    .slide-coassist  .slide-main .body,
+    .slide-conference .slide-main .body,
+    .slide-offer     .slide-main .body { max-width: 100%; }
+
+    .slide-coassist  .qr-wrap,
+    .slide-conference .qr-wrap,
+    .slide-offer     .qr-wrap { margin-top: 0; flex: 0 0 auto; }
+
+    /* Bigger QR so it scans from across the room on a TV */
+    .qr-box.large {
+      width:  clamp(240px, 40vh, 380px);
+      height: clamp(240px, 40vh, 380px);
+    }
   }
 </style>
 </head>
@@ -797,12 +806,14 @@
 
   <!-- ============ SLIDE 2: CoASSIST ============ -->
   <div class="slide slide-coassist" data-duration="8000">
+    <div class="slide-main">
     <div class="logo logo-coassist-top">
       <img src="logo-coassist-stacked-white.svg" alt="CoASSIST" onerror="this.style.display='none'">
     </div>
     <div class="free-badge blue">Free Forever</div>
     <h1 class="headline large">Your site visit<br>isn't a <span class="accent-yellow">fire drill.</span></h1>
     <p class="body">Every CoAEMSP standard tracked.<br>Every piece of evidence in one place.</p>
+    </div>
     <div class="qr-wrap">
       <div class="qr-box">
         <img src="qr-coassist.png" alt="Sign up for CoASSIST"
@@ -829,9 +840,11 @@
 
   <!-- ============ SLIDE 4: Play. Compete. Win Starbucks. ============ -->
   <div class="slide slide-conference" data-duration="8000" data-bright>
+    <div class="slide-main">
     <div class="eyebrow">Pulse Conference Mode</div>
     <h1 class="headline giant">Play.<br>Compete.<br>Win Starbucks.</h1>
     <p class="body">Top score wins a <strong>$20 Starbucks gift card</strong>.<br>Scan, jump in. No login.</p>
+    </div>
     <div class="qr-wrap">
       <div class="qr-box large">
         <img src="qr-pulse.png" alt="Scan to play Pulse Conference Mode"
@@ -912,9 +925,11 @@
 
   <!-- ============ SLIDE 9: THE OFFER ============ -->
   <div class="slide slide-offer" data-duration="8000" data-bright>
+    <div class="slide-main">
     <div class="eyebrow">AccreditCon 2026 Offer</div>
     <h1 class="headline giant">1 Month of Test-Prep.<br><span class="massive-free">FREE.</span></h1>
     <p class="body">Book a meeting within <strong>14 days</strong> and we'll include a<br><strong>free month of test-prep</strong> with your first purchase.</p>
+    </div>
     <div class="qr-wrap">
       <div class="qr-box large">
         <img src="qr-leadform.png" alt="Scan to book a meeting"
@@ -989,16 +1004,6 @@
     <rect x="14" y="4" width="4" height="16" rx="1"/>
   </svg>
   <span>Paused</span>
-</div>
-
-<!-- Landscape rotate message (shown when iPad is rotated to landscape) -->
-<div class="rotate-message" id="rotate-message">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-    <rect x="5" y="2" width="14" height="20" rx="2.5"/>
-    <line x1="11" y1="18.5" x2="13" y2="18.5"/>
-  </svg>
-  <h2>Please rotate to portrait</h2>
-  <p>This display is designed for portrait orientation.</p>
 </div>
 
 <script>
