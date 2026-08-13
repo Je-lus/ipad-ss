@@ -1,5 +1,6 @@
 *.png
 !accreditcon-booth/qr-*.png
+!naemse-booth/qr-*.png
 branding/
 *Zone.Identifier
 *mshield
