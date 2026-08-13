@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="MedEdPrep">
+<link rel="apple-touch-icon" href="logo-mep-white.svg">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0A0A0A">
+<title>MedEdPrep — NAEMSE 2026</title>
+<style>
+  /* ============ LOCAL FONTS ============ */
+  @font-face { font-family: 'Poppins'; font-style: normal; font-weight: 400; font-display: swap; src: url(fonts/poppins-400.woff2) format('woff2'); }
+  @font-face { font-family: 'Poppins'; font-style: normal; font-weight: 500; font-display: swap; src: url(fonts/poppins-500.woff2) format('woff2'); }
+  @font-face { font-family: 'Poppins'; font-style: normal; font-weight: 600; font-display: swap; src: url(fonts/poppins-600.woff2) format('woff2'); }
+  @font-face { font-family: 'Poppins'; font-style: normal; font-weight: 700; font-display: swap; src: url(fonts/poppins-700.woff2) format('woff2'); }
+  @font-face { font-family: 'Poppins'; font-style: normal; font-weight: 800; font-display: swap; src: url(fonts/poppins-800.woff2) format('woff2'); }
+  @font-face { font-family: 'Poppins'; font-style: normal; font-weight: 900; font-display: swap; src: url(fonts/poppins-900.woff2) format('woff2'); }
+
+  :root {
+    --bg:        #0A0A0A;
+    --mint:      #36C98D;
+    --aqua:      #01CDAB;
+    --yellow:    #F5C542;
+    --gray-l:    #E0E0E0;
+    --gray-m:    #8A8A8A;
+    --gray-d:    #333333;
+    --blue:      #1B5FD0;
+    --blue-deep: #0A2E6E;
+    --white:     #FFFFFF;
+    --black:     #000000;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    touch-action: manipulation;
+    overscroll-behavior: none;
+  }
+
+  /* ============ STAGE ============ */
+  .stage {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background: var(--bg);
+  }
+
+  /* ============ SLIDES (base) ============ */
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 9vh 7vw 10vh;
+    opacity: 0;
+    pointer-events: none;
+    text-align: center;
+    z-index: 2;
+    overflow: hidden;
+    transition: opacity 0.55s ease-in-out;
+  }
+  .slide.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Groups the text content of a slide so it can sit beside the QR in landscape */
+  .slide-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 100%;
+  }
+
+  /* ============ ENTRANCE ANIMATIONS ============ */
+  .slide .eyebrow,
+  .slide .headline,
+  .slide .body,
+  .slide .tagline,
+  .slide .free-badge,
+  .slide .qr-wrap,
+  .slide .ecosystem-grid {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  }
+  .slide.active .eyebrow      { opacity: 1; transform: translateY(0); transition-delay: 0.1s; }
+  .slide.active .free-badge   { opacity: 1; transform: translateY(0); transition-delay: 0.15s; }
+  .slide.active .headline     { opacity: 1; transform: translateY(0); transition-delay: 0.2s; }
+  .slide.active .body         { opacity: 1; transform: translateY(0); transition-delay: 0.35s; }
+  .slide.active .tagline      { opacity: 1; transform: translateY(0); transition-delay: 0.35s; }
+  .slide.active .qr-wrap      { opacity: 1; transform: translateY(0); transition-delay: 0.45s; }
+  .slide.active .ecosystem-grid { opacity: 1; transform: translateY(0); transition-delay: 0.3s; }
+
+  /* Logos get a separate entrance */
+  .slide .logo {
+    opacity: 0;
+    transform: scale(0.92);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  }
+  .slide.active .logo { opacity: 1; transform: scale(1); transition-delay: 0.05s; }
+
+  /* Override entrance animation opacity for inverted slides */
+  .slide-conference.active .eyebrow { opacity: 0.7; }
+
+  /* ============ PER-SLIDE BACKGROUNDS ============ */
+
+  .slide-welcome {
+    background:
+      radial-gradient(ellipse 80% 60% at center, rgba(27, 95, 208, 0.20) 0%, transparent 60%),
+      var(--bg);
+  }
+
+  .slide-coassist {
+    background:
+      linear-gradient(180deg, rgba(27, 95, 208, 0.28) 0%, transparent 50%),
+      var(--bg);
+  }
+  .slide-coassist::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 10px;
+    background: var(--blue);
+    box-shadow: 0 0 30px var(--blue);
+  }
+
+  .slide-pulse {
+    background:
+      radial-gradient(ellipse 100% 70% at top right, rgba(54, 201, 141, 0.30) 0%, transparent 60%),
+      var(--bg);
+  }
+  .slide-pulse::before {
+    content: '';
+    position: absolute;
+    right: 0; top: 0; bottom: 0;
+    width: 10px;
+    background: var(--mint);
+    box-shadow: 0 0 30px var(--mint);
+  }
+
+  .slide-conference {
+    background: linear-gradient(135deg, var(--mint) 0%, var(--aqua) 100%);
+    color: var(--black);
+  }
+  .slide-conference .body         { color: rgba(0, 0, 0, 0.78); }
+  .slide-conference .body strong  { color: var(--black); }
+  .slide-conference .qr-caption   { color: var(--black); }
+  .slide-conference .eyebrow      { color: var(--black); }
+  .slide-conference .qr-box       { box-shadow: 0 12px 60px rgba(0,0,0,0.35); animation: none; }
+  .slide-conference { padding: 3vh 7vw 10vh; justify-content: center; }
+  .slide-conference .eyebrow { margin-bottom: 1.5vh; }
+  .slide-conference .headline.giant {
+    font-size: clamp(2.6rem, 9vh, 6rem);
+    line-height: 1.05;
+    margin-bottom: 1.2vh;
+  }
+  .slide-conference .body { margin-bottom: 1vh; }
+  .slide-conference .qr-wrap { margin-top: 0.5vh; }
+
+  .slide-clinicals {
+    background:
+      linear-gradient(180deg, rgba(27, 95, 208, 0.18) 0%, transparent 70%),
+      var(--bg);
+  }
+  .slide-clinicals::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.06) 1.2px, transparent 1.2px);
+    background-size: 28px 28px;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .slide-clinicals > * { position: relative; z-index: 1; }
+
+  .slide-testing {
+    background:
+      linear-gradient(180deg, rgba(27, 95, 208, 0.22) 0%, transparent 55%),
+      var(--bg);
+  }
+  .slide-testing::before {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 6px;
+    background: linear-gradient(90deg, var(--blue), var(--aqua));
+    box-shadow: 0 0 20px var(--blue);
+  }
+
+  .slide-testprep {
+    background:
+      radial-gradient(ellipse 90% 60% at bottom left, rgba(54, 201, 141, 0.22) 0%, transparent 60%),
+      var(--bg);
+  }
+  .slide-testprep::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 10px;
+    background: var(--mint);
+    box-shadow: 0 0 30px var(--mint);
+  }
+
+  .slide-ecosystem {
+    background:
+      radial-gradient(ellipse 70% 60% at center, rgba(27, 95, 208, 0.30) 0%, transparent 65%),
+      var(--bg);
+  }
+
+  .slide-offer {
+    background:
+      radial-gradient(ellipse at center, #FFD659 0%, var(--yellow) 100%);
+    color: var(--black);
+  }
+  .slide-offer { padding: 6vh 7vw 13vh; }
+  .slide-offer .eyebrow       { color: rgba(0, 0, 0, 0.6); }
+  .slide-offer .body          { color: rgba(0, 0, 0, 0.78); }
+  .slide-offer .body strong   { color: var(--black); }
+  .slide-offer .qr-caption    { color: var(--black); }
+  .slide-offer .qr-box        { box-shadow: 0 16px 70px rgba(0,0,0,0.4); animation: none; }
+
+  /* OFFER headline: split sizing so "1 Month of Test-Prep." fits on one line and FREE is the hero */
+  .slide-offer .headline.giant {
+    font-size: clamp(2.2rem, 6.5vh, 4.2rem);
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+  }
+  .slide-offer .massive-free  {
+    display: block;
+    color: var(--black);
+    font-weight: 900;
+    font-size: clamp(4rem, 14vh, 9rem);
+    line-height: 0.92;
+    letter-spacing: -0.05em;
+    margin-top: 1vh;
+    animation: free-pulse 2.8s ease-in-out infinite;
+    animation-delay: 0.6s;
+    transform-origin: center;
+  }
+  @keyframes free-pulse {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.035); }
+  }
+
+  .slide-solutions {
+    background:
+      linear-gradient(135deg, rgba(27, 95, 208, 0.15) 0%, rgba(10, 46, 110, 0.3) 100%),
+      var(--bg);
+  }
+  .slide-solutions::before {
+    content: '';
+    position: absolute;
+    right: 0; top: 0; bottom: 0;
+    width: 10px;
+    background: var(--blue);
+    box-shadow: 0 0 30px var(--blue);
+  }
+
+  .slide-demo {
+    background:
+      radial-gradient(ellipse 90% 70% at bottom, rgba(54, 201, 141, 0.25) 0%, transparent 70%),
+      var(--bg);
+  }
+
+  .slide-closer {
+    background:
+      radial-gradient(ellipse 60% 50% at center, rgba(27, 95, 208, 0.15) 0%, transparent 70%),
+      var(--bg);
+  }
+
+  /* ============ TYPOGRAPHY ============ */
+  .eyebrow {
+    font-size: clamp(1.05rem, 2.2vh, 1.5rem);
+    font-weight: 700;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--mint);
+    margin-bottom: 2.5vh;
+  }
+  .eyebrow.blue { color: var(--blue); }
+
+  .headline {
+    font-size: clamp(2rem, 5.5vh, 4.2rem);
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    margin-bottom: 3vh;
+    max-width: 92%;
+  }
+  .headline.large   { font-size: clamp(2.6rem, 7.5vh, 5.5rem); }
+  .headline.huge    { font-size: clamp(3rem, 10vh, 6.5rem); }
+  .headline.massive {
+    font-size: clamp(3.2rem, 11vh, 7rem);
+    font-weight: 800;
+    line-height: 1.0;
+  }
+  .headline.giant {
+    font-size: clamp(3.6rem, 13vh, 8.5rem);
+    font-weight: 900;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+  }
+
+  .body {
+    font-size: clamp(1.4rem, 2.9vh, 2rem);
+    font-weight: 400;
+    line-height: 1.45;
+    color: var(--gray-l);
+    max-width: 85%;
+    margin-bottom: 3vh;
+  }
+  .body strong { color: var(--white); font-weight: 600; }
+
+  .tagline {
+    font-size: clamp(1.3rem, 2.8vh, 1.8rem);
+    font-weight: 500;
+    color: var(--mint);
+    letter-spacing: 0.04em;
+    margin-top: 3vh;
+    max-width: 80%;
+  }
+  .tagline.blue { color: var(--blue); }
+
+  .free        { color: var(--yellow); font-weight: 800; }
+  .accent-mint { color: var(--mint); }
+  .accent-aqua { color: var(--aqua); }
+  .accent-blue { color: var(--blue); }
+  .accent-yellow { color: var(--yellow); }
+
+  /* ============ LOGOS ============ */
+  .logo { display: block; margin: 0 auto; }
+  .logo img { display: block; width: 100%; height: auto; }
+
+  .logo-mep-hero     { width: clamp(280px, 60vw, 540px); margin-bottom: 4vh; }
+  .logo-mep-top      { width: clamp(160px, 34vw, 280px); margin-bottom: 3vh; }
+  .logo-mep-final    { width: clamp(260px, 55vw, 480px); margin-bottom: 3vh; }
+
+  .logo-coassist-top { width: clamp(180px, 36vw, 300px); margin-bottom: 1.5vh; }
+
+  .logo-pulse-top    { width: clamp(300px, 60vw, 460px); margin-bottom: 2.5vh; }
+
+  /* ============ QR CODE ============ */
+  .qr-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.8vh;
+    margin-top: 2vh;
+  }
+  .qr-box {
+    width: clamp(160px, 22vh, 260px);
+    height: clamp(160px, 22vh, 260px);
+    background: var(--white);
+    border-radius: 18px;
+    padding: 12px;
+    box-shadow: 0 0 60px rgba(54, 201, 141, 0.45), 0 0 0 3px rgba(54, 201, 141, 0.15);
+    animation: qr-pulse 2.6s ease-in-out infinite;
+    position: relative;
+  }
+  @keyframes qr-pulse {
+    0%, 100% { box-shadow: 0 0 60px rgba(54, 201, 141, 0.45), 0 0 0 3px rgba(54, 201, 141, 0.15); }
+    50%      { box-shadow: 0 0 100px rgba(54, 201, 141, 0.75), 0 0 0 5px rgba(54, 201, 141, 0.3); }
+  }
+  .qr-box.large {
+    width: clamp(200px, 28vh, 320px);
+    height: clamp(200px, 28vh, 320px);
+  }
+  .qr-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    border-radius: 10px;
+  }
+  .qr-placeholder {
+    width: 100%;
+    height: 100%;
+    background:
+      repeating-linear-gradient(45deg,
+        #ededed 0, #ededed 14px,
+        #dadada 14px, #dadada 28px);
+    color: #1a1a1a;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 14px;
+    font-family: 'Poppins', sans-serif;
+  }
+  .qr-placeholder strong {
+    font-size: clamp(1rem, 2.4vh, 1.4rem);
+    font-weight: 700;
+    margin-bottom: 1vh;
+  }
+  .qr-placeholder code {
+    background: rgba(0,0,0,0.12);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-family: 'SF Mono', Menlo, Consolas, monospace;
+    font-size: 0.78rem;
+    margin-top: 0.6vh;
+    display: inline-block;
+    word-break: break-all;
+  }
+  .qr-caption {
+    font-size: clamp(1.1rem, 2.6vh, 1.6rem);
+    font-weight: 700;
+    color: var(--mint);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .qr-caption.large { font-size: clamp(1.3rem, 3vh, 2rem); }
+
+  /* ============ FREE BADGE ============ */
+  .free-badge {
+    display: inline-block;
+    background: var(--yellow);
+    color: var(--black);
+    font-weight: 800;
+    padding: 0.7vh 2.4vw;
+    border-radius: 999px;
+    font-size: clamp(1rem, 2vh, 1.3rem);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 2.5vh;
+    box-shadow: 0 0 40px rgba(245, 197, 66, 0.5);
+  }
+  .free-badge.blue {
+    background: var(--blue);
+    color: var(--white);
+    box-shadow: 0 0 40px rgba(27, 95, 208, 0.6);
+  }
+
+  /* ============ ECOSYSTEM GRID ============ */
+  .ecosystem-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2vh 3vw;
+    margin-top: 3vh;
+    max-width: 90%;
+  }
+  .eco-card {
+    border: 1.5px solid rgba(255, 255, 255, 0.18);
+    border-radius: 14px;
+    padding: 2.2vh 2.5vw;
+    background: rgba(255, 255, 255, 0.03);
+    font-weight: 600;
+    font-size: clamp(0.95rem, 2vh, 1.3rem);
+    letter-spacing: 0.04em;
+    text-align: center;
+  }
+  .eco-card .eco-name { color: var(--white); font-size: clamp(1.1rem, 2.4vh, 1.5rem); display: block; margin-bottom: 0.4vh; }
+  .eco-card .eco-tag  { color: var(--gray-m); font-size: clamp(0.8rem, 1.6vh, 1rem); font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; }
+  .eco-card.mint   { border-color: rgba(54, 201, 141, 0.6); }
+  .eco-card.blue   { border-color: rgba(27, 95, 208, 0.6); }
+  .eco-card.aqua   { border-color: rgba(1, 205, 171, 0.55); }
+  .eco-card.yellow { border-color: rgba(245, 197, 66, 0.55); }
+
+  /* ============ PERSISTENT QR CORNERS ============ */
+  .corner-qr {
+    position: absolute;
+    bottom: 2.2vh;
+    z-index: 15;
+    display: flex;
+    align-items: flex-end;
+    gap: 1.2vh;
+    opacity: 0.85;
+    transition: opacity 0.4s;
+  }
+  .corner-qr:hover { opacity: 1; }
+  .corner-qr.left  { left: 3vw; }
+  .corner-qr.right { right: 3vw; }
+  .corner-qr .cq-img {
+    width: clamp(64px, 9vh, 100px);
+    height: clamp(64px, 9vh, 100px);
+    background: var(--white);
+    border-radius: 10px;
+    padding: 4px;
+    box-shadow: 0 0 20px rgba(255,255,255,0.08);
+  }
+  .corner-qr .cq-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 6px;
+    display: block;
+  }
+  .corner-qr .cq-label {
+    font-size: clamp(0.65rem, 1.2vh, 0.85rem);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    line-height: 1.3;
+    max-width: 12vw;
+  }
+  .cq-placeholder {
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(45deg, #ededed 0, #ededed 8px, #dadada 8px, #dadada 16px);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+  .corner-qr.left .cq-label  { text-align: left; color: var(--mint); }
+  .corner-qr.right .cq-label { text-align: right; color: var(--blue); }
+  /* Hide corners on bright slides */
+  .stage.on-bright .corner-qr .cq-label { color: rgba(0,0,0,0.6); }
+  .stage.on-bright .corner-qr .cq-img { box-shadow: 0 4px 20px rgba(0,0,0,0.25); }
+
+  /* ============ PERSISTENT FOOTER ============ */
+  .footer-url {
+    position: absolute;
+    bottom: 0.8vh;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: clamp(0.6rem, 1vh, 0.8rem);
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+    z-index: 15;
+    pointer-events: none;
+  }
+  .stage.on-bright .footer-url { color: rgba(0,0,0,0.25); }
+
+  /* ============ PROGRESS BAR ============ */
+  .progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 5px;
+    background: linear-gradient(90deg, var(--mint), var(--aqua));
+    width: 0%;
+    z-index: 20;
+    box-shadow: 0 0 12px var(--mint);
+  }
+  .stage.on-bright .progress {
+    background: var(--black);
+    box-shadow: 0 0 8px rgba(0,0,0,0.3);
+  }
+
+  /* ============ SOLUTIONS GRID ============ */
+  .solutions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.8vh;
+    margin-top: 2vh;
+    max-width: 85%;
+  }
+  .sol-item {
+    display: flex;
+    align-items: center;
+    gap: 3vw;
+    text-align: left;
+  }
+  .sol-icon {
+    font-size: clamp(1.8rem, 4vh, 3rem);
+    flex-shrink: 0;
+    width: 2em;
+    text-align: center;
+  }
+  .sol-text {
+    font-size: clamp(1.1rem, 2.2vh, 1.5rem);
+    font-weight: 500;
+    color: var(--gray-l);
+  }
+  .sol-text strong { color: var(--white); font-weight: 700; }
+
+  /* ============ COFFEE ICON ============ */
+  .coffee {
+    display: inline-block;
+    width: 0.85em;
+    height: 0.85em;
+    vertical-align: -0.05em;
+    margin: 0 0.15em;
+  }
+
+  /* ============ HELPER (desktop only) ============ */
+  .hint {
+    position: fixed;
+    bottom: 14px;
+    right: 14px;
+    color: rgba(255,255,255,0.35);
+    font-size: 11px;
+    font-family: 'SF Mono', Menlo, Consolas, monospace;
+    z-index: 30;
+    pointer-events: none;
+  }
+  @media (hover: none) and (pointer: coarse) { .hint { display: none; } }
+
+  /* ============ WELCOME SUB-TAGLINE ============ */
+  .sub-tagline {
+    font-size: clamp(0.85rem, 1.7vh, 1.15rem);
+    font-weight: 400;
+    color: var(--gray-m);
+    letter-spacing: 0.04em;
+    margin-top: 1.2vh;
+    font-style: italic;
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  }
+  .slide.active .sub-tagline { opacity: 1; transform: translateY(0); transition-delay: 0.5s; }
+
+  /* ============ PULSE SHIELD ON PULSE SLIDE ============ */
+  .pulse-shield-slide {
+    width: clamp(100px, 16vh, 160px);
+    height: auto;
+    margin-bottom: 2vh;
+    overflow: visible;
+    opacity: 0;
+    transform: scale(0.85);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  }
+  .slide.active .pulse-shield-slide {
+    opacity: 1;
+    transform: scale(1);
+    transition-delay: 0.05s;
+  }
+
+  /* ============ ANIMATED PULSE SHIELD (closer slide) ============ */
+  .pulse-shield-closer {
+    width: clamp(120px, 18vh, 180px);
+    height: auto;
+    margin-bottom: 3vh;
+    overflow: visible;
+    opacity: 0;
+    transform: scale(0.85);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  }
+  .slide.active .pulse-shield-closer {
+    opacity: 1;
+    transform: scale(1);
+    transition-delay: 0.05s;
+  }
+
+  /* ============ ANIMATED PULSE SHIELD (legacy styles) ============ */
+  .pulse-shield-animated {
+    width: clamp(60px, 10vh, 100px);
+    height: auto;
+    margin-bottom: 1.5vh;
+    overflow: visible;
+    opacity: 0;
+    transform: scale(0.85);
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  }
+  .slide.active .pulse-shield-animated {
+    opacity: 1;
+    transform: scale(1);
+    transition-delay: 0.05s;
+  }
+  .pulse-shield-fill { fill: rgba(0, 0, 0, 0.2); }
+  .pulse-shield-outline { fill: none; stroke: rgba(0, 0, 0, 0.35); stroke-width: 6; }
+  .pulse-ekg-path { fill: rgba(0, 0, 0, 0.7); }
+  @keyframes ekg-reveal {
+    0%   { clip-path: inset(0 100% 0 0); }
+    100% { clip-path: inset(0 0% 0 0); }
+  }
+  .ekg-reveal-group {
+    animation: ekg-reveal 2.5s linear 1 forwards;
+  }
+
+  /* ============ SHIMMER ON $20 STARBUCKS ============ */
+  .slide-conference .body strong {
+    display: inline-block;
+    font-size: 1.15em;
+    background: linear-gradient(135deg, #000 0%, #2d1a00 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    padding: 0.1em 0.3em;
+    border-radius: 6px;
+    background-color: rgba(255, 255, 255, 0.92);
+    -webkit-text-fill-color: #000;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.2);
+    animation: starbucks-shimmer 2.6s ease-in-out infinite;
+    animation-delay: 0.9s;
+    transform-origin: center;
+  }
+  @keyframes starbucks-shimmer {
+    0%, 100% { transform: scale(1); box-shadow: 0 2px 15px rgba(0,0,0,0.2); }
+    50%      { transform: scale(1.06); box-shadow: 0 4px 25px rgba(0,0,0,0.35); }
+  }
+
+  /* ============ PAUSED STATE ============ */
+  .paused-indicator {
+    position: fixed;
+    top: 3vh;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 0.6em;
+    background: rgba(0, 0, 0, 0.7);
+    color: var(--white);
+    padding: 1vh 3vw;
+    border-radius: 999px;
+    font-size: clamp(0.75rem, 1.5vh, 1rem);
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    z-index: 50;
+    opacity: 0;
+    transition: opacity 0.25s ease-in-out;
+    pointer-events: none;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+  .paused-indicator svg { width: 1.1em; height: 1.1em; fill: currentColor; }
+  body.paused .paused-indicator { opacity: 1; }
+  body.paused .progress {
+    animation: paused-pulse 1.8s ease-in-out infinite;
+  }
+  @keyframes paused-pulse {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0.35; }
+  }
+
+  /* ============ LANDSCAPE / TV LAYOUT ============ */
+  @media (orientation: landscape) and (min-width: 900px) {
+    /* More side padding, less top/bottom, to suit a wide 16:9 screen */
+    .slide { padding: 6vh 8vw; }
+
+    /* QR slides: text column on the left, big QR on the right */
+    .slide-coassist,
+    .slide-conference,
+    .slide-offer {
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: center;
+      align-items: center;
+      gap: 6vw;
+    }
+    .slide-conference,
+    .slide-offer { padding: 6vh 8vw; }
+
+    .slide-coassist  .slide-main,
+    .slide-conference .slide-main,
+    .slide-offer     .slide-main {
+      align-items: flex-start;
+      text-align: left;
+      max-width: 54vw;
+      flex: 1 1 auto;
+    }
+    /* Let the headline/body use the full width of their column */
+    .slide-coassist  .slide-main .headline,
+    .slide-conference .slide-main .headline,
+    .slide-offer     .slide-main .headline,
+    .slide-coassist  .slide-main .body,
+    .slide-conference .slide-main .body,
+    .slide-offer     .slide-main .body { max-width: 100%; }
+
+    .slide-coassist  .qr-wrap,
+    .slide-conference .qr-wrap,
+    .slide-offer     .qr-wrap { margin-top: 0; flex: 0 0 auto; }
+
+    /* Bigger QR so it scans from across the room on a TV */
+    .qr-box.large {
+      width:  clamp(240px, 40vh, 380px);
+      height: clamp(240px, 40vh, 380px);
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="stage" id="stage">
+
+  <!-- ============ SLIDE 1: Welcome ============ -->
+  <div class="slide slide-welcome" data-duration="5000">
+    <div class="eyebrow">Trusted by EMS Programs Nationwide</div>
+    <div class="logo logo-mep-hero">
+      <img src="logo-mep-white.svg" alt="MedEdPrep" onerror="this.style.display='none'">
+    </div>
+    <div class="tagline">The operating system for EMS education</div>
+    <div class="sub-tagline">Built by EMS educators, for EMS educators</div>
+  </div>
+
+  <!-- ============ SLIDE 2: CoASSIST ============ -->
+  <div class="slide slide-coassist" data-duration="8000">
+    <div class="slide-main">
+    <div class="logo logo-coassist-top">
+      <img src="logo-coassist-stacked-white.svg" alt="CoASSIST" onerror="this.style.display='none'">
+    </div>
+    <div class="free-badge blue">Free Forever</div>
+    <h1 class="headline large">Your site visit<br>isn't a <span class="accent-yellow">fire drill.</span></h1>
+    <p class="body">Every CoAEMSP standard tracked.<br>Every piece of evidence in one place.</p>
+    </div>
+    <div class="qr-wrap">
+      <div class="qr-box">
+        <img src="qr-coassist.png" alt="Sign up for CoASSIST"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="qr-placeholder" style="display:none;">
+          <strong>QR CODE HERE</strong>
+          <code>qr-coassist.png</code>
+          <span style="margin-top:8px;font-size:0.75rem;">coassist.io/signup</span>
+        </div>
+      </div>
+      <div class="qr-caption" style="color:var(--blue);">Sign up free</div>
+    </div>
+  </div>
+
+  <!-- ============ SLIDE 3: Pulse ============ -->
+  <div class="slide slide-pulse" data-duration="7000">
+    <div class="logo logo-pulse-top">
+      <img src="logo-pulse-cropped.svg" alt="Pulse by MedEdPrep" onerror="this.style.display='none'">
+    </div>
+    <div class="free-badge">Free for Your Classroom</div>
+    <h1 class="headline large">Make EMS study <span class="accent-mint">addictive.</span></h1>
+    <p class="body">Live classroom games. Spaced-repetition flashcards.<br>Analytics instructors actually use.</p>
+  </div>
+
+  <!-- ============ SLIDE 4: Play. Compete. Win Starbucks. ============ -->
+  <div class="slide slide-conference" data-duration="8000" data-bright>
+    <div class="slide-main">
+    <div class="eyebrow">Pulse Conference Mode</div>
+    <h1 class="headline giant">Play.<br>Compete.<br>Win Starbucks.</h1>
+    <p class="body">Top score wins a <strong>$20 Starbucks gift card</strong>.<br>Scan, jump in. No login.</p>
+    </div>
+    <div class="qr-wrap">
+      <div class="qr-box large">
+        <img src="qr-pulse.png" alt="Scan to play Pulse Conference Mode"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="qr-placeholder" style="display:none;">
+          <strong>QR CODE HERE</strong>
+          <code>qr-pulse.png</code>
+        </div>
+      </div>
+      <div class="qr-caption large">Scan to play now</div>
+    </div>
+  </div>
+
+  <!-- ============ SLIDE 5: Clinicals ============ -->
+  <div class="slide slide-clinicals" data-duration="7000">
+    <div class="logo logo-mep-top">
+      <img src="logo-mep-white.svg" alt="MedEdPrep" onerror="this.style.display='none'">
+    </div>
+    <div class="eyebrow blue">Clinicals</div>
+    <h1 class="headline large">Clinical compliance<br>without the <span class="accent-blue">paper chase.</span></h1>
+    <p class="body">Every patient encounter logged, locked, and exportable.<br>Built for CoAEMSP.</p>
+  </div>
+
+  <!-- ============ SLIDE 6: Validated Testing ============ -->
+  <div class="slide slide-testing" data-duration="7000">
+    <div class="logo logo-mep-top">
+      <img src="logo-mep-white.svg" alt="MedEdPrep" onerror="this.style.display='none'">
+    </div>
+    <div class="eyebrow blue">Validated Testing</div>
+    <h1 class="headline large">Exam integrity,<br><span class="accent-blue">built in.</span></h1>
+    <p class="body">Scored. Exportable. Defensible.<br>Validated assessments your accreditor will trust.</p>
+  </div>
+
+  <!-- ============ SLIDE 7: Test Prep ============ -->
+  <div class="slide slide-testprep" data-duration="7000">
+    <div class="logo logo-mep-top">
+      <img src="logo-mep-white.svg" alt="MedEdPrep" onerror="this.style.display='none'">
+    </div>
+    <div class="eyebrow">Test Prep</div>
+    <h1 class="headline large">Students pass.<br><span class="accent-mint">Programs thrive.</span></h1>
+    <p class="body">Adaptive study paths built for NREMT success.<br>From first-time pass to mastery.</p>
+  </div>
+
+  <!-- ============ SLIDE 8: One Ecosystem ============ -->
+  <div class="slide slide-ecosystem" data-duration="7000">
+    <div class="logo logo-mep-top">
+      <img src="logo-mep-white.svg" alt="MedEdPrep" onerror="this.style.display='none'">
+    </div>
+    <div class="eyebrow blue">One Platform. Every Tool.</div>
+    <h1 class="headline">An ecosystem built for<br><span class="accent-blue">EMS education.</span></h1>
+    <div class="ecosystem-grid">
+      <div class="eco-card blue">
+        <span class="eco-name">CoASSIST</span>
+        <span class="eco-tag">Accreditation</span>
+      </div>
+      <div class="eco-card mint">
+        <span class="eco-name">Pulse</span>
+        <span class="eco-tag">Engagement</span>
+      </div>
+      <div class="eco-card aqua">
+        <span class="eco-name">Clinicals</span>
+        <span class="eco-tag">Documentation</span>
+      </div>
+      <div class="eco-card blue">
+        <span class="eco-name">Testing</span>
+        <span class="eco-tag">Validated Testing</span>
+      </div>
+      <div class="eco-card yellow">
+        <span class="eco-name">Test-Prep</span>
+        <span class="eco-tag">Exam Readiness</span>
+      </div>
+      <div class="eco-card aqua">
+        <span class="eco-name">Custom</span>
+        <span class="eco-tag">Solutions</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ SLIDE 9: THE OFFER ============ -->
+  <div class="slide slide-offer" data-duration="8000" data-bright>
+    <div class="slide-main">
+    <div class="eyebrow">NAEMSE 2026 Offer</div>
+    <h1 class="headline giant">1 Month of Test-Prep.<br><span class="massive-free">FREE.</span></h1>
+    <p class="body">Sit down for a demo and take a <strong>free month of Test-Prep</strong>.<br>Run it with your students. See if it's a fit.</p>
+    </div>
+    <div class="qr-wrap">
+      <div class="qr-box large">
+        <img src="qr-leadform.png" alt="Scan to book a meeting"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="qr-placeholder" style="display:none;">
+          <strong>QR CODE HERE</strong>
+          <code>qr-leadform.png</code>
+        </div>
+      </div>
+      <div class="qr-caption large">Scan to book</div>
+    </div>
+  </div>
+
+  <!-- ============ SLIDE 10: Custom Solutions ============ -->
+  <div class="slide slide-solutions" data-duration="7000">
+    <div class="logo logo-mep-top">
+      <img src="logo-mep-white.svg" alt="MedEdPrep" onerror="this.style.display='none'">
+    </div>
+    <div class="eyebrow blue">EMS Solutions Company</div>
+    <h1 class="headline large">Your program is unique.<br><span class="accent-blue">Your tools should be too.</span></h1>
+    <p class="body">Tailored workflows, dedicated support, and<br>solutions built around how your program runs.</p>
+  </div>
+
+  <!-- ============ SLIDE 11: Demo CTA ============ -->
+  <div class="slide slide-demo" data-duration="7000">
+    <h1 class="headline huge">Let's talk<br><span class="accent-mint">while we're here.</span></h1>
+    <p class="body">We can meet outside of peak hours for a full walkthrough.<br>Free <span class="accent-mint">Starbucks</span><svg class="coffee" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--mint);"><path d="M17 8h1a4 4 0 0 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg> for anyone who books a meeting.</p>
+  </div>
+
+  <!-- ============ SLIDE 12: Closer ============ -->
+  <div class="slide slide-closer" data-duration="5000">
+    <div class="logo logo-mep-final">
+      <img src="logo-mep-white.svg" alt="MedEdPrep" onerror="this.style.display='none'">
+    </div>
+    <div class="tagline blue">Built by EMS educators,<br>for EMS educators.</div>
+  </div>
+
+  <!-- ============ PERSISTENT CORNER QR: Pulse (left) ============ -->
+  <div class="corner-qr left" id="cq-left">
+    <div class="cq-img">
+      <img src="qr-pulse.png" alt="Play Pulse"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="cq-placeholder" style="display:none;">QR</div>
+    </div>
+    <div class="cq-label" id="cq-left-label">Play<br>Pulse</div>
+  </div>
+
+  <!-- ============ PERSISTENT CORNER QR: Book (right) ============ -->
+  <div class="corner-qr right" id="cq-right">
+    <div class="cq-label" id="cq-right-label">Book a<br>Meeting</div>
+    <div class="cq-img">
+      <img src="qr-leadform.png" alt="Book a meeting"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+      <div class="cq-placeholder" style="display:none;">QR</div>
+    </div>
+  </div>
+
+  <!-- Footer URL -->
+  <div class="footer-url">mededprep.com</div>
+
+  <!-- Progress bar -->
+  <div class="progress" id="progress"></div>
+
+</div>
+
+<div class="hint">tap to advance &middot; hold to pause &middot; loops automatically</div>
+
+<!-- Paused indicator (shows when slideshow is held) -->
+<div class="paused-indicator" id="paused-indicator">
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <rect x="6" y="4" width="4" height="16" rx="1"/>
+    <rect x="14" y="4" width="4" height="16" rx="1"/>
+  </svg>
+  <span>Paused</span>
+</div>
+
+<script>
+  (function () {
+    const slides   = document.querySelectorAll('.slide');
+    const progress = document.getElementById('progress');
+    const stage    = document.getElementById('stage');
+    const cqLeftLabel  = document.getElementById('cq-left-label');
+    const cqRightLabel = document.getElementById('cq-right-label');
+    let   index    = 0;
+    let   slideTO, progressRAF, progressStart;
+
+    // Per-slide contextual labels for the persistent corner QRs
+    const cornerLabels = {
+      'slide-welcome':    { left: 'Play<br>Pulse',        right: 'Book a<br>Meeting' },
+      'slide-coassist':   { left: 'Try<br>Pulse',         right: 'Sign Up<br>Free' },
+      'slide-pulse':      { left: 'Play<br>Now',          right: 'Book a<br>Demo' },
+      'slide-conference': { left: 'Play<br>Now',          right: 'Book a<br>Meeting' },
+      'slide-clinicals':  { left: 'Try<br>Pulse',         right: 'Learn<br>More' },
+      'slide-testing':    { left: 'Try<br>Pulse',         right: 'Learn<br>More' },
+      'slide-testprep':   { left: 'Play<br>Pulse',        right: 'Book a<br>Meeting' },
+      'slide-ecosystem':  { left: 'Play<br>Pulse',        right: 'Book a<br>Meeting' },
+      'slide-offer':      { left: 'Play<br>Pulse',        right: 'Scan to<br>Book' },
+      'slide-solutions':  { left: 'Try<br>Pulse',         right: 'Get in<br>Touch' },
+      'slide-demo':       { left: 'Play<br>Pulse',        right: 'Book<br>Now' },
+      'slide-closer':     { left: 'Play<br>Pulse',        right: 'Book a<br>Meeting' },
+    };
+
+    function getSlideClass(el) {
+      for (const cls of el.classList) {
+        if (cls.startsWith('slide-')) return cls;
+      }
+      return '';
+    }
+
+    function showSlide(i) {
+      slides.forEach(s => s.classList.remove('active'));
+      slides[i].classList.add('active');
+
+      const slideClass = getSlideClass(slides[i]);
+
+      // Bright background toggle
+      if (slides[i].hasAttribute('data-bright')) {
+        stage.classList.add('on-bright');
+      } else {
+        stage.classList.remove('on-bright');
+      }
+
+      // Update corner QR labels
+      const labels = cornerLabels[slideClass] || { left: 'Play<br>Pulse', right: 'Book a<br>Meeting' };
+      if (cqLeftLabel)  cqLeftLabel.innerHTML  = labels.left;
+      if (cqRightLabel) cqRightLabel.innerHTML = labels.right;
+
+      const duration = parseInt(slides[i].dataset.duration, 10) || 7000;
+
+      // Animate progress bar
+      cancelAnimationFrame(progressRAF);
+      progress.style.width = '0%';
+      progressStart = performance.now();
+      function step(now) {
+        const pct = Math.min(100, ((now - progressStart) / duration) * 100);
+        progress.style.width = pct + '%';
+        if (pct < 100) progressRAF = requestAnimationFrame(step);
+      }
+      progressRAF = requestAnimationFrame(step);
+
+      clearTimeout(slideTO);
+      slideTO = setTimeout(() => {
+        index = (index + 1) % slides.length;
+        showSlide(index);
+      }, duration);
+    }
+
+    // ----- Pause / resume (hold to pause, release to resume) -----
+    let isPaused = false;
+    let downTime = 0;
+    let holdTimer = null;
+    const HOLD_MS = 500;
+
+    function pauseShow() {
+      if (isPaused) return;
+      isPaused = true;
+      clearTimeout(slideTO);
+      cancelAnimationFrame(progressRAF);
+      document.body.classList.add('paused');
+    }
+
+    function resumeShow() {
+      if (!isPaused) return;
+      isPaused = false;
+      document.body.classList.remove('paused');
+      showSlide(index);
+    }
+
+    function advance() {
+      clearTimeout(slideTO);
+      index = (index + 1) % slides.length;
+      showSlide(index);
+    }
+
+    // Fullscreen attempt (non-iOS only; iOS uses standalone mode via Add to Home Screen)
+    let triedFullscreen = false;
+    function tryFullscreen() {
+      if (triedFullscreen) return;
+      triedFullscreen = true;
+      const el = document.documentElement;
+      const req = el.requestFullscreen || el.webkitRequestFullscreen || el.webkitRequestFullScreen;
+      if (req) req.call(el).catch(() => {});
+    }
+
+    // Use touchstart/touchend for iOS reliability, pointer events as fallback
+    function handleDown(e) {
+      e.preventDefault();
+      downTime = Date.now();
+      holdTimer = setTimeout(() => {
+        pauseShow();
+        holdTimer = null;
+      }, HOLD_MS);
+      tryFullscreen();
+    }
+
+    function handleUp(e) {
+      e.preventDefault();
+      const heldMs = Date.now() - downTime;
+      if (holdTimer) { clearTimeout(holdTimer); holdTimer = null; }
+
+      if (isPaused) {
+        resumeShow();
+      } else if (heldMs < HOLD_MS) {
+        advance();
+      }
+    }
+
+    function handleCancel() {
+      if (holdTimer) { clearTimeout(holdTimer); holdTimer = null; }
+    }
+
+    // Touch events (iOS/iPad)
+    document.addEventListener('touchstart', handleDown, { passive: false });
+    document.addEventListener('touchend', handleUp, { passive: false });
+    document.addEventListener('touchcancel', handleCancel);
+
+    // Mouse fallback (desktop preview)
+    document.addEventListener('mousedown', handleDown);
+    document.addEventListener('mouseup', handleUp);
+
+    // Suppress everything that interferes on iOS
+    document.addEventListener('contextmenu', (e) => e.preventDefault());
+    document.addEventListener('selectstart', (e) => e.preventDefault());
+
+    // Prevent pull-to-refresh and bounce scrolling on iOS
+    document.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
+
+    // Optional offset for multiple iPads: ?offset=3
+    const params = new URLSearchParams(window.location.search);
+    const offset = parseInt(params.get('offset'), 10) || 0;
+    index = offset % slides.length;
+
+    showSlide(index);
+  })();
+
+  // Register service worker for offline caching
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+  }
+</script>
+
+</body>
+</html>
