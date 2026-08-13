@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<!--
+  MedEdPrep — NAEMSE 2026 booth follow-up email
+  ================================================
+  Suggested subject:   Your free month of Test-Prep (and a coffee on us)
+  Suggested preheader: (set below in the hidden div)
+
+  BEFORE SENDING — swap these three placeholders:
+    1. {{FirstName}}      -> your sender's first-name merge tag
+                             (Mailchimp: *|FNAME|*, HubSpot: {{contact.firstname}}, etc.)
+                             Most senders let you set a fallback, e.g. "there".
+    2. {{BOOKING_LINK}}   -> the NAEMSE book-a-meeting URL (appears twice: button + text link)
+    3. {{LOGO_URL}}       -> hosted URL of the dark-on-white MedEdPrep logo
+                             (reuse the image URL from your current template)
+
+  Built email-safe: tables, inline styles, no web fonts, solid button color.
+-->
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>MedEdPrep — NAEMSE 2026</title>
+</head>
+<body style="margin:0; padding:0; background-color:#eef0f2;">
+
+  <!-- Preheader: shows after the subject in the inbox, invisible in the email body -->
+  <div style="display:none; max-height:0; overflow:hidden; mso-hide:all;">
+    A free month of Test-Prep for your students &#8212; and a Starbucks gift card for you.
+  </div>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#eef0f2;">
+    <tr>
+      <td align="center" style="padding:24px 12px;">
+
+        <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:600px; max-width:100%; background-color:#ffffff; border-radius:8px; overflow:hidden;">
+
+          <!-- ============ LOGO ============ -->
+          <tr>
+            <td align="center" style="padding:32px 24px 24px;">
+              <img src="{{LOGO_URL}}" width="220" alt="MedEdPrep" style="display:block; width:220px; max-width:60%; height:auto; border:0;">
+            </td>
+          </tr>
+
+          <!-- ============ BLUE RULE ============ -->
+          <tr>
+            <td style="background-color:#1B5FD0; height:4px; line-height:4px; font-size:0;">&nbsp;</td>
+          </tr>
+
+          <!-- ============ GREETING ============ -->
+          <tr>
+            <td style="padding:32px 40px 8px; font-family:'Segoe UI', Arial, Helvetica, sans-serif; font-size:16px; line-height:1.6; color:#333333;">
+              <p style="margin:0 0 16px;">Hi {{FirstName}},</p>
+              <p style="margin:0 0 4px;">Thanks for stopping by the <strong>MedEdPrep booth at NAEMSE&nbsp;2026</strong> &#8212; here&#8217;s the good stuff:</p>
+            </td>
+          </tr>
+
+          <!-- ============ OFFER BOX ============ -->
+          <tr>
+            <td style="padding:8px 40px 8px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#FFF8E1; border:1px solid #F5C542; border-radius:8px;">
+                <tr>
+                  <td style="padding:20px 24px; font-family:'Segoe UI', Arial, Helvetica, sans-serif; font-size:16px; line-height:1.6; color:#333333;">
+                    <div style="font-size:12px; font-weight:bold; letter-spacing:2px; color:#A07C10; text-transform:uppercase; margin-bottom:10px;">Your Offer</div>
+                    <div style="margin-bottom:12px;"><strong>1.</strong> Book a demo below and we&#8217;ll include a <strong>free month of Test&#8209;Prep</strong> &#8212; run it with your students and see if it&#8217;s a fit for your program.</div>
+                    <div>&#9749; <strong>2.</strong> Then come back by the booth and show us your confirmed meeting &#8212; <strong>you&#8217;ll leave with a Starbucks gift card in hand.</strong></div>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ============ BUTTON ============ -->
+          <tr>
+            <td align="center" style="padding:28px 40px 12px;">
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td align="center" bgcolor="#36C98D" style="border-radius:8px;">
+                    <a href="{{BOOKING_LINK}}" target="_blank"
+                       style="display:inline-block; padding:16px 40px; font-family:'Segoe UI', Arial, Helvetica, sans-serif; font-size:17px; font-weight:bold; color:#000000; text-decoration:none; border-radius:8px;">
+                      Book a Meeting
+                    </a>
+                  </td>
+                </tr>
+              </table>
+              <!-- Plain-text fallback link for clients that block buttons -->
+              <div style="margin-top:12px; font-family:'Segoe UI', Arial, Helvetica, sans-serif; font-size:13px; color:#8A8A8A;">
+                Or use this link: <a href="{{BOOKING_LINK}}" target="_blank" style="color:#1B5FD0;">{{BOOKING_LINK}}</a>
+              </div>
+            </td>
+          </tr>
+
+          <!-- ============ TAGLINE ============ -->
+          <tr>
+            <td align="center" style="padding:24px 40px 4px; border-top:1px solid #eeeeee; font-family:'Segoe UI', Arial, Helvetica, sans-serif;">
+              <div style="font-size:18px; font-weight:600; color:#333333;">The operating system for <span style="color:#1B5FD0;">EMS education</span>.</div>
+            </td>
+          </tr>
+
+          <!-- ============ PRODUCT CHIPS ============ -->
+          <tr>
+            <td align="center" style="padding:12px 32px 20px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="6" border="0" style="font-family:'Segoe UI', Arial, Helvetica, sans-serif;">
+                <tr>
+                  <td width="33%" align="center" style="border:1.5px solid #F5C542; border-radius:10px; padding:12px 6px;">
+                    <div style="font-size:15px; font-weight:bold; color:#333333;">Test-Prep</div>
+                    <div style="font-size:10px; font-weight:600; letter-spacing:1px; color:#8A8A8A; text-transform:uppercase; margin-top:3px;">Exam Readiness</div>
+                  </td>
+                  <td width="33%" align="center" style="border:1.5px solid #1B5FD0; border-radius:10px; padding:12px 6px;">
+                    <div style="font-size:15px; font-weight:bold; color:#333333;">Testing</div>
+                    <div style="font-size:10px; font-weight:600; letter-spacing:1px; color:#8A8A8A; text-transform:uppercase; margin-top:3px;">Validated Exams</div>
+                  </td>
+                  <td width="33%" align="center" style="border:1.5px solid #01CDAB; border-radius:10px; padding:12px 6px;">
+                    <div style="font-size:15px; font-weight:bold; color:#333333;">Clinicals</div>
+                    <div style="font-size:10px; font-weight:600; letter-spacing:1px; color:#8A8A8A; text-transform:uppercase; margin-top:3px;">Documentation</div>
+                  </td>
+                </tr>
+                <tr>
+                  <td width="33%" align="center" style="border:1.5px solid #36C98D; border-radius:10px; padding:12px 6px;">
+                    <div style="font-size:15px; font-weight:bold; color:#333333;">Pulse</div>
+                    <div style="font-size:10px; font-weight:600; letter-spacing:1px; color:#8A8A8A; text-transform:uppercase; margin-top:3px;">Engagement</div>
+                  </td>
+                  <td width="33%" align="center" style="border:1.5px solid #01CDAB; border-radius:10px; padding:12px 6px;">
+                    <div style="font-size:15px; font-weight:bold; color:#333333;">Custom</div>
+                    <div style="font-size:10px; font-weight:600; letter-spacing:1px; color:#8A8A8A; text-transform:uppercase; margin-top:3px;">Solutions</div>
+                  </td>
+                  <td width="33%" align="center" style="border:1.5px solid #1B5FD0; border-radius:10px; padding:12px 6px;">
+                    <div style="font-size:15px; font-weight:bold; color:#333333;">One Price</div>
+                    <div style="font-size:10px; font-weight:600; letter-spacing:1px; color:#8A8A8A; text-transform:uppercase; margin-top:3px;">No Fees</div>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ============ SIGN-OFF ============ -->
+          <tr>
+            <td style="padding:16px 40px 8px; font-family:'Segoe UI', Arial, Helvetica, sans-serif; font-size:16px; line-height:1.6; color:#333333;">
+              <p style="margin:0 0 16px;">Enjoy the rest of the conference!</p>
+              <p style="margin:0 0 4px;">Best regards,</p>
+              <p style="margin:0;"><strong>Jeramey</strong></p>
+              <p style="margin:4px 0 0; font-size:14px; color:#8A8A8A;">
+                MedEdPrep &nbsp;&middot;&nbsp;
+                <a href="mailto:Support@MedEdPrep.com" style="color:#1B5FD0; text-decoration:none;">Support@MedEdPrep.com</a>
+                &nbsp;&middot;&nbsp;
+                <a href="tel:+14703000090" style="color:#1B5FD0; text-decoration:none;">470-300-0090</a>
+              </p>
+            </td>
+          </tr>
+
+          <!-- ============ P.S. ============ -->
+          <tr>
+            <td style="padding:16px 40px 32px; font-family:'Segoe UI', Arial, Helvetica, sans-serif; font-size:15px; line-height:1.6; color:#333333;">
+              <strong>P.S.</strong> Share code <strong style="background-color:#F0F9F5; border:1px solid #36C98D; border-radius:4px; padding:1px 8px; font-family:Consolas, Menlo, monospace;">NAEMSE26</strong> with your students &#8212; 30% off for the life of their subscription.
+            </td>
+          </tr>
+
+          <!-- ============ FOOTER ============ -->
+          <tr>
+            <td align="center" style="padding:20px 40px; background-color:#f7f7f7; border-top:1px solid #e5e5e5; font-family:'Segoe UI', Arial, Helvetica, sans-serif; font-size:14px; color:#8A8A8A;">
+              MedEdPrep&nbsp;|&nbsp;EMS Education Excellence
+              <div style="font-size:12px; color:#aaaaaa; margin-top:6px;">&copy; 2026 MedEdPrep. All rights reserved.</div>
+            </td>
+          </tr>
+
+        </table>
+
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>
