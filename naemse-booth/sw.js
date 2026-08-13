@@ -1,4 +1,4 @@
-const CACHE_NAME = 'naemse-booth-v1';
+const CACHE_NAME = 'naemse-booth-v2';
 const ASSETS = [
   './',
   './slideshow.html',
@@ -10,13 +10,11 @@ const ASSETS = [
   './fonts/poppins-800.woff2',
   './fonts/poppins-900.woff2',
   './logo-mep-white.svg',
-  './logo-coassist-stacked-white.svg',
-  './logo-coassist-white.svg',
   './logo-pulse-cropped.svg',
-  './logo-pulse.svg',
   './qr-pulse.png',
-  './qr-coassist.png',
   './qr-leadform.png',
+  './qr-linktree.png',
+  './starbscard.jpg',
 ];
 
 // Install: cache all assets
@@ -24,7 +22,7 @@ self.addEventListener('install', (e) => {
   e.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(ASSETS).catch(() => {
-        // If some assets don't exist yet (QR PNGs), cache what we can
+        // If some assets don't exist yet, cache what we can
         return Promise.allSettled(ASSETS.map(url => cache.add(url)));
       });
     })

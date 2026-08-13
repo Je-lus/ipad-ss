@@ -97,6 +97,8 @@
   .slide .tagline,
   .slide .free-badge,
   .slide .qr-wrap,
+  .slide .social-pills,
+  .slide .solutions-list,
   .slide .ecosystem-grid {
     opacity: 0;
     transform: translateY(18px);
@@ -109,6 +111,8 @@
   .slide.active .tagline      { opacity: 1; transform: translateY(0); transition-delay: 0.35s; }
   .slide.active .qr-wrap      { opacity: 1; transform: translateY(0); transition-delay: 0.45s; }
   .slide.active .ecosystem-grid { opacity: 1; transform: translateY(0); transition-delay: 0.3s; }
+  .slide.active .social-pills   { opacity: 1; transform: translateY(0); transition-delay: 0.45s; }
+  .slide.active .solutions-list { opacity: 1; transform: translateY(0); transition-delay: 0.35s; }
 
   /* Logos get a separate entrance */
   .slide .logo {
@@ -119,7 +123,7 @@
   .slide.active .logo { opacity: 1; transform: scale(1); transition-delay: 0.05s; }
 
   /* Override entrance animation opacity for inverted slides */
-  .slide-conference.active .eyebrow { opacity: 0.7; }
+  .slide-promo.active .eyebrow { opacity: 0.7; }
 
   /* ============ PER-SLIDE BACKGROUNDS ============ */
 
@@ -127,20 +131,6 @@
     background:
       radial-gradient(ellipse 80% 60% at center, rgba(27, 95, 208, 0.20) 0%, transparent 60%),
       var(--bg);
-  }
-
-  .slide-coassist {
-    background:
-      linear-gradient(180deg, rgba(27, 95, 208, 0.28) 0%, transparent 50%),
-      var(--bg);
-  }
-  .slide-coassist::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 10px;
-    background: var(--blue);
-    box-shadow: 0 0 30px var(--blue);
   }
 
   .slide-pulse {
@@ -157,24 +147,21 @@
     box-shadow: 0 0 30px var(--mint);
   }
 
-  .slide-conference {
+  .slide-promo {
     background: linear-gradient(135deg, var(--mint) 0%, var(--aqua) 100%);
     color: var(--black);
   }
-  .slide-conference .body         { color: rgba(0, 0, 0, 0.78); }
-  .slide-conference .body strong  { color: var(--black); }
-  .slide-conference .qr-caption   { color: var(--black); }
-  .slide-conference .eyebrow      { color: var(--black); }
-  .slide-conference .qr-box       { box-shadow: 0 12px 60px rgba(0,0,0,0.35); animation: none; }
-  .slide-conference { padding: 3vh 7vw 10vh; justify-content: center; }
-  .slide-conference .eyebrow { margin-bottom: 1.5vh; }
-  .slide-conference .headline.giant {
+  .slide-promo .body         { color: rgba(0, 0, 0, 0.78); }
+  .slide-promo .body strong  { color: var(--black); }
+  .slide-promo .eyebrow      { color: var(--black); }
+  .slide-promo { padding: 3vh 7vw 10vh; justify-content: center; }
+  .slide-promo .eyebrow { margin-bottom: 1.5vh; }
+  .slide-promo .headline.giant {
     font-size: clamp(2.6rem, 9vh, 6rem);
     line-height: 1.05;
     margin-bottom: 1.2vh;
   }
-  .slide-conference .body { margin-bottom: 1vh; }
-  .slide-conference .qr-wrap { margin-top: 0.5vh; }
+  .slide-promo .body { margin-bottom: 1vh; }
 
   .slide-clinicals {
     background:
@@ -282,6 +269,27 @@
       var(--bg);
   }
 
+  .slide-pricing {
+    background:
+      radial-gradient(ellipse 80% 60% at bottom right, rgba(245, 197, 66, 0.10) 0%, transparent 60%),
+      linear-gradient(180deg, rgba(27, 95, 208, 0.18) 0%, transparent 55%),
+      var(--bg);
+  }
+
+  .slide-social {
+    background:
+      radial-gradient(ellipse 90% 70% at top, rgba(1, 205, 171, 0.20) 0%, transparent 65%),
+      var(--bg);
+  }
+  .slide-social::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 10px;
+    background: var(--aqua);
+    box-shadow: 0 0 30px var(--aqua);
+  }
+
   .slide-closer {
     background:
       radial-gradient(ellipse 60% 50% at center, rgba(27, 95, 208, 0.15) 0%, transparent 70%),
@@ -354,8 +362,6 @@
   .logo-mep-hero     { width: clamp(280px, 60vw, 540px); margin-bottom: 4vh; }
   .logo-mep-top      { width: clamp(160px, 34vw, 280px); margin-bottom: 3vh; }
   .logo-mep-final    { width: clamp(260px, 55vw, 480px); margin-bottom: 3vh; }
-
-  .logo-coassist-top { width: clamp(180px, 36vw, 300px); margin-bottom: 1.5vh; }
 
   .logo-pulse-top    { width: clamp(300px, 60vw, 460px); margin-bottom: 2.5vh; }
 
@@ -433,6 +439,45 @@
   }
   .qr-caption.large { font-size: clamp(1.3rem, 3vh, 2rem); }
 
+  /* ============ STARBUCKS CARD PHOTO ============ */
+  .card-photo {
+    width: clamp(260px, 36vh, 440px);
+    aspect-ratio: 173 / 100;
+    overflow: hidden;
+    border-radius: 16px;
+    background: var(--white);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.55), 0 0 50px rgba(54, 201, 141, 0.3);
+    transform: rotate(-3deg);
+  }
+  .card-photo img {
+    /* Slightly oversized to crop the stray background at the photo's edges */
+    display: block;
+    width: 106%;
+    height: auto;
+  }
+
+  /* ============ SOCIAL PILLS ============ */
+  .social-pills {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.6vh 1.4vw;
+    margin-top: 1vh;
+    max-width: 85%;
+  }
+  .social-pill {
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    border-radius: 999px;
+    padding: 1vh 2.4vw;
+    font-weight: 700;
+    font-size: clamp(1rem, 2.2vh, 1.5rem);
+    letter-spacing: 0.04em;
+  }
+  .social-pill.facebook  { border-color: #1877F2; }
+  .social-pill.instagram { border-color: #E1306C; }
+  .social-pill.tiktok    { border-color: #69C9D0; }
+  .social-pill.linkedin  { border-color: #0A66C2; }
+
   /* ============ FREE BADGE ============ */
   .free-badge {
     display: inline-block;
@@ -455,13 +500,15 @@
 
   /* ============ ECOSYSTEM GRID ============ */
   .ecosystem-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2vh 3vw;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2vh 2.5vw;
     margin-top: 3vh;
     max-width: 90%;
   }
   .eco-card {
+    flex: 0 1 clamp(170px, 24vw, 280px);
     border: 1.5px solid rgba(255, 255, 255, 0.18);
     border-radius: 14px;
     padding: 2.2vh 2.5vw;
@@ -593,15 +640,6 @@
   }
   .sol-text strong { color: var(--white); font-weight: 700; }
 
-  /* ============ COFFEE ICON ============ */
-  .coffee {
-    display: inline-block;
-    width: 0.85em;
-    height: 0.85em;
-    vertical-align: -0.05em;
-    margin: 0 0.15em;
-  }
-
   /* ============ HELPER (desktop only) ============ */
   .hint {
     position: fixed;
@@ -687,8 +725,8 @@
     animation: ekg-reveal 2.5s linear 1 forwards;
   }
 
-  /* ============ SHIMMER ON $20 STARBUCKS ============ */
-  .slide-conference .body strong {
+  /* ============ SHIMMER ON THE NAEMSE26 PROMO CODE ============ */
+  .slide-promo .body strong {
     display: inline-block;
     font-size: 1.15em;
     background: linear-gradient(135deg, #000 0%, #2d1a00 100%);
@@ -700,11 +738,11 @@
     background-color: rgba(255, 255, 255, 0.92);
     -webkit-text-fill-color: #000;
     box-shadow: 0 2px 15px rgba(0,0,0,0.2);
-    animation: starbucks-shimmer 2.6s ease-in-out infinite;
+    animation: promo-shimmer 2.6s ease-in-out infinite;
     animation-delay: 0.9s;
     transform-origin: center;
   }
-  @keyframes starbucks-shimmer {
+  @keyframes promo-shimmer {
     0%, 100% { transform: scale(1); box-shadow: 0 2px 15px rgba(0,0,0,0.2); }
     50%      { transform: scale(1.06); box-shadow: 0 4px 25px rgba(0,0,0,0.35); }
   }
@@ -749,9 +787,9 @@
     /* More side padding, less top/bottom, to suit a wide 16:9 screen */
     .slide { padding: 6vh 8vw; }
 
-    /* QR slides: text column on the left, big QR on the right */
-    .slide-coassist,
-    .slide-conference,
+    /* QR/card slides: text column on the left, big QR or card on the right */
+    .slide-demo,
+    .slide-social,
     .slide-offer {
       flex-direction: row;
       flex-wrap: nowrap;
@@ -759,11 +797,11 @@
       align-items: center;
       gap: 6vw;
     }
-    .slide-conference,
+    .slide-promo,
     .slide-offer { padding: 6vh 8vw; }
 
-    .slide-coassist  .slide-main,
-    .slide-conference .slide-main,
+    .slide-demo      .slide-main,
+    .slide-social    .slide-main,
     .slide-offer     .slide-main {
       align-items: flex-start;
       text-align: left;
@@ -771,16 +809,19 @@
       flex: 1 1 auto;
     }
     /* Let the headline/body use the full width of their column */
-    .slide-coassist  .slide-main .headline,
-    .slide-conference .slide-main .headline,
+    .slide-demo      .slide-main .headline,
+    .slide-social    .slide-main .headline,
     .slide-offer     .slide-main .headline,
-    .slide-coassist  .slide-main .body,
-    .slide-conference .slide-main .body,
+    .slide-demo      .slide-main .body,
+    .slide-social    .slide-main .body,
     .slide-offer     .slide-main .body { max-width: 100%; }
 
-    .slide-coassist  .qr-wrap,
-    .slide-conference .qr-wrap,
+    .slide-demo      .qr-wrap,
+    .slide-social    .qr-wrap,
     .slide-offer     .qr-wrap { margin-top: 0; flex: 0 0 auto; }
+
+    /* Left-align the social pills when the slide runs as a row */
+    .slide-social .social-pills { justify-content: flex-start; }
 
     /* Bigger QR so it scans from across the room on a TV */
     .qr-box.large {
@@ -796,7 +837,7 @@
 
   <!-- ============ SLIDE 1: Welcome ============ -->
   <div class="slide slide-welcome" data-duration="5000">
-    <div class="eyebrow">Trusted by EMS Programs Nationwide</div>
+    <div class="eyebrow">Welcome to NAEMSE 2026</div>
     <div class="logo logo-mep-hero">
       <img src="logo-mep-white.svg" alt="MedEdPrep" onerror="this.style.display='none'">
     </div>
@@ -804,31 +845,7 @@
     <div class="sub-tagline">Built by EMS educators, for EMS educators</div>
   </div>
 
-  <!-- ============ SLIDE 2: CoASSIST ============ -->
-  <div class="slide slide-coassist" data-duration="8000">
-    <div class="slide-main">
-    <div class="logo logo-coassist-top">
-      <img src="logo-coassist-stacked-white.svg" alt="CoASSIST" onerror="this.style.display='none'">
-    </div>
-    <div class="free-badge blue">Free Forever</div>
-    <h1 class="headline large">Your site visit<br>isn't a <span class="accent-yellow">fire drill.</span></h1>
-    <p class="body">Every CoAEMSP standard tracked.<br>Every piece of evidence in one place.</p>
-    </div>
-    <div class="qr-wrap">
-      <div class="qr-box">
-        <img src="qr-coassist.png" alt="Sign up for CoASSIST"
-             onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-        <div class="qr-placeholder" style="display:none;">
-          <strong>QR CODE HERE</strong>
-          <code>qr-coassist.png</code>
-          <span style="margin-top:8px;font-size:0.75rem;">coassist.io/signup</span>
-        </div>
-      </div>
-      <div class="qr-caption" style="color:var(--blue);">Sign up free</div>
-    </div>
-  </div>
-
-  <!-- ============ SLIDE 3: Pulse ============ -->
+  <!-- ============ SLIDE 2: Pulse ============ -->
   <div class="slide slide-pulse" data-duration="7000">
     <div class="logo logo-pulse-top">
       <img src="logo-pulse-cropped.svg" alt="Pulse by MedEdPrep" onerror="this.style.display='none'">
@@ -838,23 +855,12 @@
     <p class="body">Live classroom games. Spaced-repetition flashcards.<br>Analytics instructors actually use.</p>
   </div>
 
-  <!-- ============ SLIDE 4: Play. Compete. Win Starbucks. ============ -->
-  <div class="slide slide-conference" data-duration="8000" data-bright>
+  <!-- ============ SLIDE 3: NAEMSE26 student promo ============ -->
+  <div class="slide slide-promo" data-duration="8000" data-bright>
     <div class="slide-main">
-    <div class="eyebrow">Pulse Conference Mode</div>
-    <h1 class="headline giant">Play.<br>Compete.<br>Win Starbucks.</h1>
-    <p class="body">Top score wins a <strong>$20 Starbucks gift card</strong>.<br>Scan, jump in. No login.</p>
-    </div>
-    <div class="qr-wrap">
-      <div class="qr-box large">
-        <img src="qr-pulse.png" alt="Scan to play Pulse Conference Mode"
-             onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-        <div class="qr-placeholder" style="display:none;">
-          <strong>QR CODE HERE</strong>
-          <code>qr-pulse.png</code>
-        </div>
-      </div>
-      <div class="qr-caption large">Scan to play now</div>
+    <div class="eyebrow">NAEMSE 2026 Special Promotion</div>
+    <h1 class="headline giant">30% off.<br>For life.</h1>
+    <p class="body">Share code <strong>NAEMSE26</strong> with your students:<br>30% off Test-Prep for the life of their subscription.</p>
     </div>
   </div>
 
@@ -896,10 +902,6 @@
     <div class="eyebrow blue">One Platform. Every Tool.</div>
     <h1 class="headline">An ecosystem built for<br><span class="accent-blue">EMS education.</span></h1>
     <div class="ecosystem-grid">
-      <div class="eco-card blue">
-        <span class="eco-name">CoASSIST</span>
-        <span class="eco-tag">Accreditation</span>
-      </div>
       <div class="eco-card mint">
         <span class="eco-name">Pulse</span>
         <span class="eco-tag">Engagement</span>
@@ -923,12 +925,36 @@
     </div>
   </div>
 
+  <!-- ============ SLIDE 8.5: One price, no surprises ============ -->
+  <div class="slide slide-pricing" data-duration="8000">
+    <div class="logo logo-mep-top">
+      <img src="logo-mep-white.svg" alt="MedEdPrep" onerror="this.style.display='none'">
+    </div>
+    <div class="eyebrow">Simple Pricing</div>
+    <h1 class="headline large">One price.<br><span class="accent-mint">No surprises.</span></h1>
+    <div class="solutions-list">
+      <div class="sol-item">
+        <div class="sol-icon" style="color:var(--mint);">&#10003;</div>
+        <div class="sol-text">No setup, annual, instructor, or admin fees</div>
+      </div>
+      <div class="sol-item">
+        <div class="sol-icon" style="color:var(--mint);">&#10003;</div>
+        <div class="sol-text">One flat rate per student, <strong>EMR through paramedic</strong></div>
+      </div>
+      <div class="sol-item">
+        <div class="sol-icon" style="color:var(--mint);">&#10003;</div>
+        <div class="sol-text">Lifetime admin access, long after the plan ends</div>
+      </div>
+    </div>
+    <div class="free-badge" style="margin-top:3.5vh;">As low as $24 / student</div>
+  </div>
+
   <!-- ============ SLIDE 9: THE OFFER ============ -->
   <div class="slide slide-offer" data-duration="8000" data-bright>
     <div class="slide-main">
     <div class="eyebrow">NAEMSE 2026 Offer</div>
     <h1 class="headline giant">1 Month of Test-Prep.<br><span class="massive-free">FREE.</span></h1>
-    <p class="body">Sit down for a demo and take a <strong>free month of Test-Prep</strong>.<br>Run it with your students. See if it's a fit.</p>
+    <p class="body">Sit down for a demo with us and take a <strong>free month of Test-Prep</strong>.<br>Run it with your students and see if it's a fit.</p>
     </div>
     <div class="qr-wrap">
       <div class="qr-box large">
@@ -953,10 +979,45 @@
     <p class="body">Tailored workflows, dedicated support, and<br>solutions built around how your program runs.</p>
   </div>
 
-  <!-- ============ SLIDE 11: Demo CTA ============ -->
-  <div class="slide slide-demo" data-duration="7000">
+  <!-- ============ SLIDE 11: Meeting = Starbucks card ============ -->
+  <div class="slide slide-demo" data-duration="8000">
+    <div class="slide-main">
+    <div class="eyebrow">Meet Us at NAEMSE 2026</div>
     <h1 class="headline huge">Let's talk<br><span class="accent-mint">while we're here.</span></h1>
-    <p class="body">We can meet outside of peak hours for a full walkthrough.<br>Free <span class="accent-mint">Starbucks</span><svg class="coffee" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--mint);"><path d="M17 8h1a4 4 0 0 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg> for anyone who books a meeting.</p>
+    <p class="body">Confirm a meeting with us and the coffee's on us.<br><strong>Every confirmed meeting gets a Starbucks card.</strong></p>
+    </div>
+    <div class="qr-wrap">
+      <div class="card-photo">
+        <img src="starbscard.jpg" alt="MedEdPrep Starbucks gift card" onerror="this.parentElement.style.display='none';">
+      </div>
+      <div class="qr-caption">Coffee's on us</div>
+    </div>
+  </div>
+
+  <!-- ============ SLIDE 12: Social follow & tag ============ -->
+  <div class="slide slide-social" data-duration="9000">
+    <div class="slide-main">
+    <div class="eyebrow accent-aqua">Follow &amp; Tag Us</div>
+    <h1 class="headline large">Post our booth.<br><span class="accent-aqua">Get a card too.</span></h1>
+    <p class="body">Follow us, post a picture of our booth, and tag us.<br><strong>You get a Starbucks card as well.</strong></p>
+    <div class="social-pills">
+      <div class="social-pill facebook">Facebook</div>
+      <div class="social-pill instagram">Instagram</div>
+      <div class="social-pill tiktok">TikTok</div>
+      <div class="social-pill linkedin">LinkedIn</div>
+    </div>
+    </div>
+    <div class="qr-wrap">
+      <div class="qr-box">
+        <img src="qr-linktree.png" alt="Scan for all MedEdPrep social links"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="qr-placeholder" style="display:none;">
+          <strong>QR CODE HERE</strong>
+          <code>qr-linktree.png</code>
+        </div>
+      </div>
+      <div class="qr-caption" style="color:var(--aqua);">All our socials</div>
+    </div>
   </div>
 
   <!-- ============ SLIDE 12: Closer ============ -->
@@ -1019,16 +1080,17 @@
     // Per-slide contextual labels for the persistent corner QRs
     const cornerLabels = {
       'slide-welcome':    { left: 'Play<br>Pulse',        right: 'Book a<br>Meeting' },
-      'slide-coassist':   { left: 'Try<br>Pulse',         right: 'Sign Up<br>Free' },
       'slide-pulse':      { left: 'Play<br>Now',          right: 'Book a<br>Demo' },
-      'slide-conference': { left: 'Play<br>Now',          right: 'Book a<br>Meeting' },
+      'slide-promo':      { left: 'Play<br>Pulse',        right: 'Book a<br>Meeting' },
       'slide-clinicals':  { left: 'Try<br>Pulse',         right: 'Learn<br>More' },
       'slide-testing':    { left: 'Try<br>Pulse',         right: 'Learn<br>More' },
       'slide-testprep':   { left: 'Play<br>Pulse',        right: 'Book a<br>Meeting' },
       'slide-ecosystem':  { left: 'Play<br>Pulse',        right: 'Book a<br>Meeting' },
+      'slide-pricing':    { left: 'Play<br>Pulse',        right: 'Book a<br>Meeting' },
       'slide-offer':      { left: 'Play<br>Pulse',        right: 'Scan to<br>Book' },
       'slide-solutions':  { left: 'Try<br>Pulse',         right: 'Get in<br>Touch' },
       'slide-demo':       { left: 'Play<br>Pulse',        right: 'Book<br>Now' },
+      'slide-social':     { left: 'Play<br>Pulse',        right: 'Book a<br>Meeting' },
       'slide-closer':     { left: 'Play<br>Pulse',        right: 'Book a<br>Meeting' },
     };
 
@@ -1123,6 +1185,7 @@
         holdTimer = null;
       }, HOLD_MS);
       tryFullscreen();
+      if (!wakeLock) requestWakeLock();
     }
 
     function handleUp(e) {
@@ -1156,6 +1219,18 @@
 
     // Prevent pull-to-refresh and bounce scrolling on iOS
     document.addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
+
+    // Keep the screen awake where supported (iPadOS 16.4+).
+    // Guided Access / Auto-Lock "Never" remains the fallback on older iPads.
+    let wakeLock = null;
+    async function requestWakeLock() {
+      if (!('wakeLock' in navigator)) return;
+      try { wakeLock = await navigator.wakeLock.request('screen'); } catch (e) {}
+    }
+    requestWakeLock();
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') requestWakeLock();
+    });
 
     // Optional offset for multiple iPads: ?offset=3
     const params = new URLSearchParams(window.location.search);
