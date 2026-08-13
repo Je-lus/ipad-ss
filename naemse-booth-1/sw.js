@@ -1,4 +1,4 @@
-const CACHE_NAME = 'naemse-booth-1-v1';
+const CACHE_NAME = 'naemse-booth-1-v2';
 const ASSETS = [
   './',
   './slideshow.html',
