@@ -1,4 +1,4 @@
-const CACHE_NAME = 'emsworld-v1';
+const CACHE_NAME = 'emsworld-v2';
 const ASSETS = [
   './',
   './slideshow.html',
