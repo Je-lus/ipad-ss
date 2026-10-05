@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MedEdPrep — Presentation Slide</title>
+<style>
+  /* ============ LOCAL FONTS ============ */
+  @font-face { font-family: 'Poppins'; font-style: normal; font-weight: 400; font-display: swap; src: url(fonts/poppins-400.woff2) format('woff2'); }
+  @font-face { font-family: 'Poppins'; font-style: normal; font-weight: 500; font-display: swap; src: url(fonts/poppins-500.woff2) format('woff2'); }
+  @font-face { font-family: 'Poppins'; font-style: normal; font-weight: 600; font-display: swap; src: url(fonts/poppins-600.woff2) format('woff2'); }
+  @font-face { font-family: 'Poppins'; font-style: normal; font-weight: 700; font-display: swap; src: url(fonts/poppins-700.woff2) format('woff2'); }
+  @font-face { font-family: 'Poppins'; font-style: normal; font-weight: 800; font-display: swap; src: url(fonts/poppins-800.woff2) format('woff2'); }
+  @font-face { font-family: 'Poppins'; font-style: normal; font-weight: 900; font-display: swap; src: url(fonts/poppins-900.woff2) format('woff2'); }
+
+  :root {
+    --bg:        #0A0A0A;
+    --mint:      #36C98D;
+    --aqua:      #01CDAB;
+    --yellow:    #F5C542;
+    --gray-l:    #E0E0E0;
+    --gray-m:    #8A8A8A;
+    --blue:      #1B5FD0;
+    --white:     #FFFFFF;
+    --black:     #000000;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: #050505;
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+  }
+
+  /* ============ FIXED 16:9 STAGE (1920x1080) — screenshot this ============ */
+  .stage {
+    position: relative;
+    width: 1920px;
+    height: 1080px;
+    flex: 0 0 auto;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse 70% 55% at 28% 22%, rgba(27, 95, 208, 0.30) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 85% 80%, rgba(54, 201, 141, 0.22) 0%, transparent 60%),
+      var(--bg);
+    color: var(--white);
+    display: flex;
+    flex-direction: column;
+    /* Scale the whole 1920x1080 stage down to fit smaller previews without distortion */
+    transform-origin: center center;
+  }
+
+  /* subtle dot texture */
+  .stage::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.045) 1.2px, transparent 1.2px);
+    background-size: 34px 34px;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .stage > * { position: relative; z-index: 1; }
+
+  /* mint accent bar down the left edge */
+  .stage::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 12px;
+    background: linear-gradient(180deg, var(--blue), var(--mint));
+    box-shadow: 0 0 40px var(--mint);
+    z-index: 2;
+  }
+
+  /* ============ HEADER ============ */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 64px 96px 0;
+  }
+  .brand { display: flex; flex-direction: column; gap: 10px; }
+  .brand img { width: 440px; height: auto; display: block; }
+  .brand .tagline {
+    font-size: 30px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    color: var(--mint);
+    margin-left: 4px;
+  }
+  .event {
+    text-align: right;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+  .event .event-name {
+    font-size: 26px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--white);
+  }
+  .event .event-place {
+    font-size: 20px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gray-m);
+    font-weight: 500;
+    margin-top: 4px;
+  }
+
+  /* ============ CENTER: HEADLINE + ECOSYSTEM ============ */
+  .center {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 96px;
+    gap: 56px;
+  }
+
+  .headline {
+    text-align: center;
+    font-size: 78px;
+    font-weight: 800;
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+    max-width: 1500px;
+  }
+  .headline .accent { color: var(--mint); }
+  .headline .accent-blue { color: #5B9BFF; }
+
+  .ecosystem {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 26px;
+    width: 100%;
+    max-width: 1640px;
+  }
+  .eco-card {
+    border: 2px solid rgba(255, 255, 255, 0.16);
+    border-radius: 18px;
+    padding: 30px 18px;
+    background: rgba(255, 255, 255, 0.035);
+    text-align: center;
+  }
+  .eco-card .eco-name {
+    display: block;
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+  .eco-card .eco-tag {
+    display: block;
+    font-size: 17px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gray-m);
+  }
+  .eco-card.blue   { border-color: rgba(27, 95, 208, 0.65); }
+  .eco-card.mint   { border-color: rgba(54, 201, 141, 0.65); }
+  .eco-card.aqua   { border-color: rgba(1, 205, 171, 0.6); }
+  .eco-card.yellow { border-color: rgba(245, 197, 66, 0.6); }
+
+  /* ============ QR STRIP ============ */
+  .qr-strip {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 120px;
+    padding: 48px 96px 64px;
+  }
+  .qr-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+  }
+  .qr-caption {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .qr-item.play  .qr-caption { color: var(--mint); }
+  .qr-item.free  .qr-caption { color: #5B9BFF; }
+  .qr-item.book  .qr-caption { color: var(--yellow); }
+  .qr-box {
+    width: 196px;
+    height: 196px;
+    background: var(--white);
+    border-radius: 20px;
+    padding: 14px;
+    box-shadow: 0 16px 50px rgba(0,0,0,0.5);
+  }
+  .qr-item.play  .qr-box { box-shadow: 0 0 50px rgba(54, 201, 141, 0.4), 0 16px 40px rgba(0,0,0,0.5); }
+  .qr-item.free  .qr-box { box-shadow: 0 0 50px rgba(27, 95, 208, 0.4), 0 16px 40px rgba(0,0,0,0.5); }
+  .qr-item.book  .qr-box { box-shadow: 0 0 50px rgba(245, 197, 66, 0.4), 0 16px 40px rgba(0,0,0,0.5); }
+  .qr-box img { width: 100%; height: 100%; object-fit: contain; display: block; border-radius: 8px; }
+  .qr-sub {
+    font-size: 19px;
+    font-weight: 500;
+    color: var(--gray-l);
+    letter-spacing: 0.02em;
+  }
+
+  .footer-url {
+    position: absolute;
+    bottom: 26px;
+    right: 96px;
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.32);
+    z-index: 3;
+  }
+</style>
+</head>
+<body>
+
+<div class="stage" id="stage">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="brand">
+      <img src="logo-mep-white.svg" alt="MedEdPrep" onerror="this.style.display='none'">
+      <div class="tagline">An EMS Solutions Company</div>
+    </div>
+    <div class="event">
+      <div class="event-name">AccreditCon 2026</div>
+      <div class="event-place">New Orleans</div>
+    </div>
+  </div>
+
+  <!-- CENTER -->
+  <div class="center">
+    <h1 class="headline">
+      Everything your program needs to<br>
+      <span class="accent-blue">teach</span>, <span class="accent">test</span>, and stay <span class="accent">accredited</span> —<br>
+      in one platform.
+    </h1>
+
+    <div class="ecosystem">
+      <div class="eco-card blue">
+        <span class="eco-name">CoASSIST</span>
+        <span class="eco-tag">Accreditation</span>
+      </div>
+      <div class="eco-card mint">
+        <span class="eco-name">Pulse</span>
+        <span class="eco-tag">Engagement</span>
+      </div>
+      <div class="eco-card aqua">
+        <span class="eco-name">Clinicals</span>
+        <span class="eco-tag">Documentation</span>
+      </div>
+      <div class="eco-card blue">
+        <span class="eco-name">Testing</span>
+        <span class="eco-tag">Validated</span>
+      </div>
+      <div class="eco-card mint">
+        <span class="eco-name">Test-Prep</span>
+        <span class="eco-tag">NREMT Ready</span>
+      </div>
+      <div class="eco-card yellow">
+        <span class="eco-name">Custom</span>
+        <span class="eco-tag">Solutions</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- QR STRIP -->
+  <div class="qr-strip">
+    <div class="qr-item play">
+      <div class="qr-caption">Play Pulse</div>
+      <div class="qr-box">
+        <img src="qr-pulse.png" alt="Scan to play Pulse">
+      </div>
+      <div class="qr-sub">Jump into the live game</div>
+    </div>
+
+    <div class="qr-item free">
+      <div class="qr-caption">CoASSIST</div>
+      <div class="qr-box">
+        <img src="qr-coassist.png" alt="Sign up for CoASSIST">
+      </div>
+      <div class="qr-sub">Sign up free</div>
+    </div>
+
+    <div class="qr-item book">
+      <div class="qr-caption">Let's Talk</div>
+      <div class="qr-box">
+        <img src="qr-leadform.png" alt="Book a meeting">
+      </div>
+      <div class="qr-sub">Book a meeting</div>
+    </div>
+  </div>
+
+  <div class="footer-url">mededprep.com</div>
+
+</div>
+
+</body>
+</html>

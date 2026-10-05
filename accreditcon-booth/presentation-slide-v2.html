@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MedEdPrep — Presentation Slide (v2)</title>
+<style>
+  /* ============ LOCAL FONTS ============ */
+  @font-face { font-family: 'Poppins'; font-style: normal; font-weight: 400; font-display: swap; src: url(fonts/poppins-400.woff2) format('woff2'); }
+  @font-face { font-family: 'Poppins'; font-style: normal; font-weight: 500; font-display: swap; src: url(fonts/poppins-500.woff2) format('woff2'); }
+  @font-face { font-family: 'Poppins'; font-style: normal; font-weight: 600; font-display: swap; src: url(fonts/poppins-600.woff2) format('woff2'); }
+  @font-face { font-family: 'Poppins'; font-style: normal; font-weight: 700; font-display: swap; src: url(fonts/poppins-700.woff2) format('woff2'); }
+  @font-face { font-family: 'Poppins'; font-style: normal; font-weight: 800; font-display: swap; src: url(fonts/poppins-800.woff2) format('woff2'); }
+  @font-face { font-family: 'Poppins'; font-style: normal; font-weight: 900; font-display: swap; src: url(fonts/poppins-900.woff2) format('woff2'); }
+
+  :root {
+    --bg:        #0A0A0A;
+    --mint:      #36C98D;
+    --aqua:      #01CDAB;
+    --yellow:    #F5C542;
+    --gray-l:    #E0E0E0;
+    --gray-m:    #8A8A8A;
+    --blue:      #1B5FD0;
+    --white:     #FFFFFF;
+    --black:     #000000;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    background: #050505;
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+  }
+
+  /* ============ FIXED 16:9 STAGE (1920x1080) — screenshot this ============ */
+  .stage {
+    position: relative;
+    width: 1920px;
+    height: 1080px;
+    flex: 0 0 auto;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse 70% 55% at 28% 22%, rgba(27, 95, 208, 0.30) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 85% 80%, rgba(54, 201, 141, 0.22) 0%, transparent 60%),
+      var(--bg);
+    color: var(--white);
+    display: flex;
+    flex-direction: row;
+    gap: 72px;
+    padding: 80px 96px;
+  }
+
+  /* subtle dot texture */
+  .stage::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.045) 1.2px, transparent 1.2px);
+    background-size: 34px 34px;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .stage > * { position: relative; z-index: 1; }
+
+  /* mint accent bar down the left edge */
+  .stage::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 12px;
+    background: linear-gradient(180deg, var(--blue), var(--mint));
+    box-shadow: 0 0 40px var(--mint);
+    z-index: 2;
+  }
+
+  /* ============ LEFT COLUMN: headline + product grid ============ */
+  .left {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .headline {
+    text-align: center;
+    font-size: 70px;
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 64px;
+  }
+  .headline .accent { color: var(--mint); }
+  .headline .accent-blue { color: #5B9BFF; }
+  .headline .accent-yellow { color: var(--yellow); }
+
+  .ecosystem {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: 1fr;
+    gap: 28px;
+    flex: 1 1 auto;
+  }
+  .eco-card {
+    border: 2px solid rgba(255, 255, 255, 0.16);
+    border-radius: 20px;
+    padding: 34px 24px;
+    background: rgba(255, 255, 255, 0.035);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .eco-card .eco-name {
+    display: block;
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 12px;
+    line-height: 1.05;
+  }
+  .eco-card .eco-tag {
+    display: block;
+    font-size: 24px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gray-m);
+  }
+  .eco-card.blue   { border-color: rgba(27, 95, 208, 0.65); }
+  .eco-card.mint   { border-color: rgba(54, 201, 141, 0.65); }
+  .eco-card.aqua   { border-color: rgba(1, 205, 171, 0.6); }
+  .eco-card.yellow { border-color: rgba(245, 197, 66, 0.6); }
+
+  /* ============ RIGHT COLUMN: brand + QR stack ============ */
+  .right {
+    flex: 0 0 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .brand {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  .brand img { width: 480px; height: auto; display: block; margin: 0 auto; }
+  .brand .tagline {
+    font-size: 32px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: var(--mint);
+    margin-top: 14px;
+  }
+
+  .qr-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    flex: 1 1 auto;
+    justify-content: center;
+    width: 100%;
+    padding: 24px 0;
+  }
+  .qr-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    width: 100%;
+  }
+  .qr-text {
+    width: 250px;
+    text-align: center;
+  }
+  .qr-caption {
+    font-size: 38px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    line-height: 1.1;
+  }
+  .qr-sub {
+    font-size: 27px;
+    font-weight: 500;
+    color: var(--gray-l);
+    margin-top: 10px;
+  }
+  .qr-row.play .qr-caption { color: var(--mint); }
+  .qr-row.free .qr-caption { color: #5B9BFF; }
+  .qr-row.book .qr-caption { color: var(--yellow); }
+
+  .qr-box {
+    flex: 0 0 auto;
+    width: 172px;
+    height: 172px;
+    background: var(--white);
+    border-radius: 16px;
+    padding: 6px;
+    box-shadow: 0 16px 50px rgba(0,0,0,0.5);
+  }
+  .qr-row.play .qr-box { box-shadow: 0 0 50px rgba(54, 201, 141, 0.4), 0 16px 40px rgba(0,0,0,0.5); }
+  .qr-row.free .qr-box { box-shadow: 0 0 50px rgba(27, 95, 208, 0.4), 0 16px 40px rgba(0,0,0,0.5); }
+  .qr-row.book .qr-box { box-shadow: 0 0 50px rgba(245, 197, 66, 0.4), 0 16px 40px rgba(0,0,0,0.5); }
+  .qr-box img { width: 100%; height: 100%; object-fit: contain; display: block; border-radius: 8px; }
+
+  .footer-url {
+    position: absolute;
+    bottom: 30px;
+    left: 96px;
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.32);
+    z-index: 3;
+  }
+</style>
+</head>
+<body>
+
+<div class="stage" id="stage">
+
+  <!-- LEFT COLUMN: headline + product grid -->
+  <div class="left">
+    <h1 class="headline">
+      Everything your program needs to<br>
+      <span class="accent-blue">teach</span>, <span class="accent">test</span>, and stay <span class="accent-yellow">accredited</span>,<br>
+      all in <span class="accent">one platform.</span>
+    </h1>
+
+    <div class="ecosystem">
+      <div class="eco-card blue">
+        <span class="eco-name">CoASSIST</span>
+        <span class="eco-tag">Accreditation</span>
+      </div>
+      <div class="eco-card mint">
+        <span class="eco-name">Pulse</span>
+        <span class="eco-tag">Engagement</span>
+      </div>
+      <div class="eco-card aqua">
+        <span class="eco-name">Clinicals</span>
+        <span class="eco-tag">Documentation</span>
+      </div>
+      <div class="eco-card blue">
+        <span class="eco-name">Testing</span>
+        <span class="eco-tag">Validated</span>
+      </div>
+      <div class="eco-card mint">
+        <span class="eco-name">Test-Prep</span>
+        <span class="eco-tag">NREMT Ready</span>
+      </div>
+      <div class="eco-card yellow">
+        <span class="eco-name">Custom</span>
+        <span class="eco-tag">Solutions</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT COLUMN: brand + QR stack -->
+  <div class="right">
+    <div class="brand">
+      <img src="logo-mep-white.svg" alt="MedEdPrep" onerror="this.style.display='none'">
+      <div class="tagline">An EMS Solutions Company</div>
+    </div>
+
+    <div class="qr-stack">
+      <div class="qr-row play">
+        <div class="qr-text">
+          <div class="qr-caption">Play Pulse</div>
+          <div class="qr-sub">Join live game</div>
+        </div>
+        <div class="qr-box">
+          <img src="qr-pulse.png" alt="Scan to play Pulse">
+        </div>
+      </div>
+
+      <div class="qr-row free">
+        <div class="qr-text">
+          <div class="qr-caption">CoASSIST</div>
+          <div class="qr-sub">Sign up free</div>
+        </div>
+        <div class="qr-box">
+          <img src="qr-coassist.png" alt="Sign up for CoASSIST">
+        </div>
+      </div>
+
+      <div class="qr-row book">
+        <div class="qr-text">
+          <div class="qr-caption">Let's Talk</div>
+          <div class="qr-sub">Book a meeting</div>
+        </div>
+        <div class="qr-box">
+          <img src="qr-leadform.png" alt="Book a meeting">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-url">mededprep.com</div>
+
+</div>
+
+</body>
+</html>
